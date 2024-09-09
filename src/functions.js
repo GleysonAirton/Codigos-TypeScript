@@ -25,41 +25,39 @@ function validateRent(idLivroForTeste, idstudent) {
     const bookForTest = Book_1.books.find(book => book.idBook === idLivroForTeste);
     const studentForTest = Student_1.students.find(student => student.idStudent === idstudent);
     if (!bookForTest) {
-        return { isValid: false, message: "Livro não encontrado." };
+        throw new Error("Livro não encontrado.");
     }
     if (!studentForTest) {
-        return { isValid: false, message: "Aluno não encontrado." };
+        throw new Error("Aluno não encontrado.");
     }
     if (studentForTest.borrowedBooks === bookLimitRented) {
-        return { isValid: false, message: "O estudante excedeu o número de aluguéis." };
+        throw new Error("O estudante excedeu o número de aluguéis.");
     }
     if (bookForTest.quantity === minimumNumberQuantity) {
-        return { isValid: false, message: "Livro não disponível." };
+        throw new Error("Livro não disponível.");
     }
-    return { isValid: true, book: bookForTest, student: studentForTest };
+    return { book: bookForTest, student: studentForTest };
 }
 exports.validateRent = validateRent;
 function rentBook(idStudentForTest, idLivroForTeste) {
-    const validationResult = validateRent(idLivroForTeste, idStudentForTest);
-    if (!validationResult.isValid) {
-        return validationResult.message || "Erro desconhecido.";
+    try {
+        const { book, student } = validateRent(idLivroForTeste, idStudentForTest);
+        book.quantity--;
+        student.borrowedBooks++;
+        const rented = {
+            idStudent: idStudentForTest,
+            idLivros: idLivroForTeste,
+            date: new Date()
+        };
+        Rental_1.rent.push(rented);
+        return `Livro: '${book?.title}' alugado com sucesso`;
     }
-    const book = validationResult.book;
-    const student = validationResult.student;
-    book.quantity--;
-    student.borrowedBooks++;
-    const rented = {
-        idStudent: idStudentForTest,
-        idLivros: idLivroForTeste,
-        date: new Date()
-    };
-    Rental_1.rent.push(rented);
-    return `Livro: '${book?.title}' alugado com sucesso`;
+    catch (error) {
+        if (error instanceof Error) {
+            return `Falha no aluguel: ${error.message}`;
+        }
+    }
 }
 exports.rentBook = rentBook;
 exports.dateOfRent = new Date();
 exports.resultOfRent = rentBook(1, 2);
-// Camel Case// 
-//Nome de classe : Começa com letra Maiuscula e separa as palavras com letras Maiusculas
-//Nome de tributo : Começa com letra Minuscula e separa as palavras com letras Maiusculas
-//nome de método : Começa com letra Minuscula e separa as palavras com letras Maiusculas

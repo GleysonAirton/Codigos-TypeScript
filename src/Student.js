@@ -18,4 +18,4 @@ exports.students = [
         borrowedBooks: 4
     }
 ];
-//console.log(students)
+console.log(exports.students);
