@@ -2,6 +2,11 @@ import { Student,students } from "./Student"
 import { Book,books } from "./Book"
 import { Rental,rent } from "./Rental";
 
+interface ValidationResult {
+  book: Book;
+  student: Student;
+}
+
 const bookLimitRented = 5;
 const minimumNumberQuantity= 0;
 
@@ -25,7 +30,7 @@ export function sortBooksByYear(books: Book[]): Book[]{
 export const orderedBooks = sortBooksByYear(books);
 
 
-export function validateRent(idLivroForTeste:number , idstudent: number): any {
+export function validateRent(idLivroForTeste:number , idstudent: number): ValidationResult {
   const bookForTest:Book | undefined = books.find(book => book.idBook === idLivroForTeste);
   const studentForTest: Student | undefined  = students.find(student => student.idStudent === idstudent);
      
