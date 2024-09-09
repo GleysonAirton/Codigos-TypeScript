@@ -74,7 +74,3 @@ export function rentBook(idStudentForTest: number, idLivroForTeste: number): str
   export const dateOfRent: Date = new Date();
   export const resultOfRent = rentBook(1, 2);  
   
-// Camel Case// 
-//Nome de classe : Começa com letra Maiuscula e separa as palavras com letras Maiusculas
-//Nome de tributo : Começa com letra Minuscula e separa as palavras com letras Maiusculas
-//nome de método : Começa com letra Minuscula e separa as palavras com letras Maiusculas

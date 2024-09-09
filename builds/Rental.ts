@@ -2,10 +2,6 @@ export interface Rental {
     idStudent: number      
     idLivros: number         
     date: Date      
-    
-    // idStudent - Camel case
-    //id_student - Snacke case
-    
 }
 export let rent:Array<Rental>=[
     {
