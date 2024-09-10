@@ -28,3 +28,4 @@ console.log(`Quantidades de livros ja alugados deste aluno: ${students.find(stud
 console.log(`Horário: ${dateOfRent}`);
 console.log("------------------------------------------------ REGISTRO DO ALUGUEL ----------------------------");
 console.log(rent)
+console.log(students)

@@ -21,4 +21,3 @@ export interface Student {
             borrowedBooks: 4
         }  
     ]
-    console.log(students)

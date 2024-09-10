@@ -3,10 +3,8 @@ import { Book,books } from "./Book"
 import { Rental,rent } from "./Rental";
 
 interface ValidationResult {
-  isValid: boolean;
-  message?: string;
-  book?: Book;
-  student?: Student;
+  book: Book;
+  student: Student;
 }
 
 const bookLimitRented = 5;
@@ -37,29 +35,23 @@ export function validateRent(idLivroForTeste:number , idstudent: number): Valida
   const studentForTest: Student | undefined  = students.find(student => student.idStudent === idstudent);
      
   if (!bookForTest) {
-    return { isValid: false, message: "Livro não encontrado." };
+    throw new Error ( "Livro não encontrado." );
   }
   if (!studentForTest) {
-    return { isValid: false, message: "Aluno não encontrado." };
+    throw new Error ("Aluno não encontrado." );
   }
   if (studentForTest.borrowedBooks === bookLimitRented) {
-    return { isValid: false, message: "O estudante excedeu o número de aluguéis." };
+    throw new Error ("O estudante excedeu o número de aluguéis.");
   }
   if (bookForTest.quantity === minimumNumberQuantity) {
-    return { isValid: false, message: "Livro não disponível." };
+    throw new Error ("Livro não disponível.");
   }
-  return { isValid: true, book: bookForTest, student: studentForTest };
+  return { book: bookForTest,student: studentForTest };
 }
 
-export function rentBook(idStudentForTest: number, idLivroForTeste: number): string {
-  const validationResult = validateRent(idLivroForTeste, idStudentForTest);
-  
-    if (!validationResult.isValid) {
-      return validationResult.message || "Erro desconhecido.";
-    }
-
-    const book = validationResult.book!;
-    const student = validationResult.student!;
+export function rentBook(idStudentForTest: number, idLivroForTeste: number): string | undefined{
+  try{
+  const {book,student} = validateRent(idLivroForTeste, idStudentForTest);
 
     book.quantity--;
     student.borrowedBooks++;
@@ -70,7 +62,10 @@ export function rentBook(idStudentForTest: number, idLivroForTeste: number): str
   };
   rent.push(rented);
   return `Livro: '${book?.title}' alugado com sucesso`
-}
-  export const dateOfRent: Date = new Date();
-  export const resultOfRent = rentBook(1, 2);  
   
+} catch (error){
+  if (error instanceof Error) {
+    return `Falha no aluguel: ${error.message}`;
+}}}
+export const dateOfRent: Date = new Date();
+export const resultOfRent = rentBook(1, 2); 
